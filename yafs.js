@@ -10,35 +10,62 @@ function YAFS(containerId)
     var scrollBarHeight = scrollBar.offsetHeight - handleHeight;
     var contentHeight = content.offsetHeight - containerHeight;
     var mouseCoord;
+    var oldMouseCoord;
     var _evtsAdded = {};
+    var iTicket;
+
+    var hostMethodRegExp = new RegExp('^function|object$', 'i');
 
     handle.style.top = '0px';
     content.style.top = '0px';
 
+    makeUnselectable(handle);
     addEvent('mousedown', handle, startScrolling);
     addEvent('mouseup', document, stopScrolling);
 
+    function isHostMethod(object, method)
+    {
+        var t = typeof object[method];
+        return !!((hostMethodRegExp.test(t) && object[method]) || t == 'unknown');
+    }
+
+    function isHostObjectProperty(object, property)
+    {
+        var t = typeof object[property];
+        return !!(hostMethodRegExp.test(t) && object[property]);
+    }
+
     function startScrolling(evt)
     {
-        mouseCoord = getMouseY(evt);
+        mouseCoord = oldMouseCoord = watchMouse(evt);
+        iTicket = window.setInterval(computeScroll, 20);
+        addEvent('mousemove', document, watchMouse);
+        return false;
+    }
 
-        addEvent('mousemove', document, computeScroll);
+    function watchMouse(evt)
+    {
+        mouseCoord = evt.pageY || evt.clientY +
+                document.body.scrollTop +
+                document.documentElement.scrollTop;
     }
 
     function computeScroll(evt)
     {
         var hTop = window.parseInt(handle.style.top, 10);
-        var newCoord = getMouseY(evt);
-        hTop += (newCoord - mouseCoord);
-        mouseCoord = newCoord;
-        console.log(newCoord, mouseCoord);
-        handle.style.top = hTop + 'px';
-        scrollContent(hTop);
+        hTop += (mouseCoord - oldMouseCoord);
+        oldMouseCoord = mouseCoord;
+        if(hTop > 0 && hTop < scrollBarHeight)
+        {
+            handle.style.top = hTop + 'px';
+            scrollContent(hTop);
+        }
     }
 
     function stopScrolling()
     {
-        removeEvent('mousemove', document, computeScroll);
+        window.clearInterval(iTicket);
+        removeEvent('mousemove', document, watchMouse);
     }
 
     function scrollContent(hTop)
@@ -163,6 +190,79 @@ function YAFS(containerId)
                 element['on' + type] = null;
             }
         }
+    }
+
+    function isEventSupported(el, eventName)
+    {
+        var isBuggy = false;
+        if (el && isHostMethod(el, 'setAttribute'))
+        {
+            el.setAttribute('a', 'b');
+            isBuggy = (el.a == 'b');
+            el = null;
+            if (isBuggy)
+            {
+                return (isEventSupported = function(el, eventName)
+                {
+                    return typeof el[eventName] != 'undefined';
+                })(el, eventName);
+            }
+            return (isEventSupported = function(el, eventName)
+            {
+                el.setAttribute(eventName, '');
+                return typeof el[eventName] == 'function';
+            })(el, eventName);
+        }
+        return null;
+    }
+
+    function makeUnselectable(el)
+    {
+
+        var selectProp, hasOnselectstart;
+
+        if (el)
+        {
+            var s = el.style;
+            if (s)
+            {
+                selectProp = typeof s.userSelect == 'string' ? 'userSelect'
+                : typeof s.MozUserSelect == 'string' ? 'MozUserSelect'
+                : typeof s.WebkitUserSelect == 'string' ? 'WebkitUserSelect'
+                : typeof s.KhtmlUserSelect == 'string' ? 'KhtmlUserSelect'
+                : '';
+            }
+
+            // found property, cleanup and return
+            if (selectProp)
+            {
+                return (makeUnselectable = function(el)
+                {
+                    if (el.style)
+                    {
+                      el.style[selectProp] = 'none';
+                    }
+                })(el);
+            }
+
+            // property wasn't found, check `onselectstart` event support
+            hasOnselectstart = isEventSupported(el, 'onselectstart');
+
+            // event seems to be supported, cleanup and return
+            if (hasOnselectstart)
+            {
+                return (makeUnselectable = function(el)
+                {
+                    el.onselectstart = fnFalse;
+                })(el);
+            }
+        }
+        return null;
+    }
+
+    function fnFalse()
+    {
+        return false;
     }
 
     return {
