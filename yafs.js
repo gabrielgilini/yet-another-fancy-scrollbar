@@ -166,7 +166,7 @@ function YAFS(containerId)
 
     function removeEvent(type, element, func)
     {
-        if (typeof func == 'function')
+        if (typeof func == 'function' && _evtsAdded[type])
         {
             for(var i = 0, l = _evtsAdded[type].length; i < l; ++i)
             {
