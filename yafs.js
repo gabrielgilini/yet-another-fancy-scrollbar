@@ -55,7 +55,7 @@ function YAFS(containerId)
         var hTop = window.parseInt(handle.style.top, 10);
         hTop += (mouseCoord - oldMouseCoord);
         oldMouseCoord = mouseCoord;
-        if(hTop > 0 && hTop < scrollBarHeight)
+        if(hTop > 0 && hTop <= scrollBarHeight)
         {
             handle.style.top = hTop + 'px';
             scrollContent(hTop);

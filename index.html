@@ -3,6 +3,9 @@
 <head>
     <title>Yet Another Fancy Scrollbar</title>
     <script type="text/javascript" src="yafs.js"></script>
+    <script type="text/javascript">
+        window.onload = function(){ var s = new YAFS('container'); };
+    </script>
     <style type="text/css">
         #container
         {
@@ -39,6 +42,7 @@
             width: 480px;
             text-align: justify;
             position: relative;
+            padding: 20px 0;
         }
 
         p
