@@ -7,22 +7,46 @@ function YAFS(containerId)
     var content = getChildByProperty(container, 'className', 'yafs-content');
     var containerHeight = container.offsetHeight;
     var handleHeight = handle.offsetHeight;
-    var scrollBarHeight = scrollBar.offsetHeight - handleHeight;
+    var scrollBarHeight = scrollBar.offsetHeight;
+    var scrollHeight = scrollBarHeight - handleHeight;
     var contentHeight = content.offsetHeight - containerHeight;
     var mouseCoord;
     var oldMouseCoord;
     var _evtsAdded = {};
     var iTicket;
-
     var hostMethodRegExp = new RegExp('^function|object$', 'i');
 
-    handle.style.top = '0px';
-    content.style.top = '0px';
+    if(contentHeight <= containerHeight)
+    {
+        handle.style.display = 'none';
+    }
+    else
+    {
+        handle.style.top = '0px';
+        content.style.top = '0px';
 
-    makeUnselectable(handle);
-    addEvent('mousedown', handle, startScrolling);
-    addEvent('mouseup', document, stopScrolling);
-
+        makeUnselectable(handle);
+        resizeHandle();
+        updateSizes();
+        addEvent('mousedown', handle, startScrolling);
+        addEvent('mouseup', document, stopScrolling);
+    }
+    
+    function resizeHandle()
+    {
+        handleHeight = containerHeight / contentHeight * containerHeight;
+        if(handleHeight < 30)
+        {
+            handleHeight = 30;
+        }
+        handle.style.height = handleHeight + 'px';
+    }
+    
+    function updateSizes()
+    {
+        scrollHeight = scrollBarHeight - handleHeight;
+    }
+    
     function isHostMethod(object, method)
     {
         var t = typeof object[method];
@@ -55,7 +79,7 @@ function YAFS(containerId)
         var hTop = window.parseInt(handle.style.top, 10);
         hTop += (mouseCoord - oldMouseCoord);
         oldMouseCoord = mouseCoord;
-        if(hTop > 0 && hTop <= scrollBarHeight)
+        if(hTop > 0 && hTop <= scrollHeight)
         {
             handle.style.top = hTop + 'px';
             scrollContent(hTop);
@@ -75,7 +99,7 @@ function YAFS(containerId)
 
     function getScrolledPercentage(hTop)
     {
-        return hTop / scrollBarHeight;
+        return hTop / scrollHeight;
     }
 
     function getMouseY(evt)
