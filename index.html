@@ -26,10 +26,58 @@
     a { color: #958e87; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
+		pre { background: #000; color: #fff; padding: 15px; overflow: auto;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
+    
+        #demo
+        {
+            width: 500px;
+            margin: 0 auto;
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+            border: 2px dashed #ccc;
+        }
+
+        #demo .yafs-scrollbar
+        {
+            width: 10px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        #demo .yafs-scrollbar .yafs-handle
+        {
+            position: relative;
+            background-color: #958e87;
+            height: 50px;
+            border: 1px solid;
+            border-top-color: #000;
+            border-left-color: #000;
+            border-right-color: #000;
+            border-bottom-color: #000;
+        }
+
+        #demo .yafs-content
+        {
+            width: 480px;
+            text-align: justify;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        p
+        {
+            margin-top: 0;
+        }
 	</style>
+    <script type="text/javascript" src="yafs.js"></script>
+    <script type="text/javascript">
+        window.onload = function(){ var s = new YAFS('demo'); };
+    </script>
 	
 </head>
 
@@ -52,9 +100,60 @@
       'Nuff said
     </div>
 
+    <h2>Demo</h2>
+    <div id="demo">
+        <div class="yafs-scrollbar">
+            <div class="yafs-handle"></div>
+        </div>
+        <div class="yafs-content">
+            <p>Far out in the uncharted backwaters of the unfashionable end of the western spiral arm of the Galaxy
+            lies a small unregarded yellow sun.</p>
+            <p>Orbiting this at a distance of roughly ninety-two million miles is an utterly insignificant little blue green
+            planet whose ape-descended life forms are so amazingly primitive that they still think digital watches are a
+            pretty neat idea.</p>
+            <p>This planet has - or rather had - a problem, which was this: most of the people on it were unhappy for
+            pretty much of the time. Many solutions were suggested for this problem, but most of these were largely
+            concerned with the movements of small green pieces of paper, which is odd because on the whole it wasn't
+            the small green pieces of paper that were unhappy.
+            And so the problem remained; lots of the people were mean, and most of them were miserable, even the
+            ones with digital watches.</p>
+            <p>Many were increasingly of the opinion that they'd all made a big mistake in coming down from the trees
+            in the first place. And some said that even the trees had been a bad move, and that no one should ever have
+            left the oceans.</p>
+            <p>And then, one Thursday, nearly two thousand years after one man had been nailed to a tree for saying
+            how great it would be to be nice to people for a change, one girl sitting on her own in a small cafe in
+            Rickmansworth suddenly realized what it was that had been going wrong all this time, and she finally knew
+            how the world could be made a good and happy place. This time it was right, it would work, and no one
+            would have to get nailed to anything.</p>
+            <p>Sadly, however, before she could get to a phone to tell anyone about it, a terribly stupid catastrophe
+            occurred, and the idea was lost forever.</p>
+            <p>This is not her story.</p>
+            <p>But it is the story of that terrible stupid catastrophe and some of its consequences.</p>
+            <p>It is also the story of a book, a book called The Hitch Hiker's Guide to the Galaxy - not an Earth book,
+            never published on Earth, and until the terrible catastrophe occurred, never seen or heard of by any Earthman.
+            Nevertheless, a wholly remarkable book.</p>
+            <p>In fact it was probably the most remarkable book ever to come out of the great publishing houses of
+            Ursa Minor - of which no Earthman had ever heard either.</p>
+            <p>Not only is it a wholly remarkable book, it is also a highly successful one - more popular than the
+            Celestial Home Care Omnibus, better selling than Fifty More Things to do in Zero Gravity, and more
+            controversial than Oolon Colluphid's trilogy of philosophical blockbusters Where God Went Wrong, Some
+            More of God's Greatest Mistakes and Who is this God Person Anyway?</p>
+            <p>In many of the more relaxed civilizations on the Outer Eastern Rim of the Galaxy, the Hitch Hiker's
+            Guide has already supplanted the great Encyclopedia Galactica as the standard repository of all knowledge
+            and wisdom, for though it has many omissions and contains much that is apocryphal, or at least wildly
+            inaccurate, it scores over the older, more pedestrian work in two important respects.</p>
+            <p>First, it is slightly cheaper; and secondly it has the words Don't Panic inscribed in large friendly letters
+            on its cover.</p>
+            <p>But the story of this terrible, stupid Thursday, the story of its extraordinary consequences, and the
+            story of how these consequences are inextricably intertwined with this remarkable book begins very
+            simply.</p>
+            <p>It begins with a house.</p>
+        </div>
+    </div>
+
     <h2>Install</h2>
 <p>HTML/CSS:
-<style type="text/css">
+<pre>&lt;style type=&quot;text/css&quot;&gt;
         #container
         {
             width: 500px;
@@ -84,39 +183,43 @@
             border-right-color: #00375F;
             border-bottom-color: #00375F;
         }
-</style>
+&lt;/style&gt;
 
-<div id="container">
-        <div class="yafs-scrollbar">
-            <div class="yafs-handle"></div>
-        </div>
-        <div class="yafs-content">
-            <p>Far out in the uncharted backwaters of the unfashionable end of the western spiral arm of the Galaxy
-            lies a small unregarded yellow sun.</p>
-            <p>Orbiting this at a distance of roughly ninety-two million miles is an utterly insignificant little blue green
+&lt;div id=&quot;container&quot;&gt;
+        &lt;div class=&quot;yafs-scrollbar&quot;&gt;
+            &lt;div class=&quot;yafs-handle&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;yafs-content&quot;&gt;
+            &lt;p&gt;Far out in the uncharted backwaters of the unfashionable end of the western spiral arm of the Galaxy
+            lies a small unregarded yellow sun.&lt;/p&gt;
+            &lt;p&gt;Orbiting this at a distance of roughly ninety-two million miles is an utterly insignificant little blue green
             planet whose ape-descended life forms are so amazingly primitive that they still think digital watches are a
-            pretty neat idea.</p>
-            <p>This planet has - or rather had - a problem, which was this: most of the people on it were unhappy for
+            pretty neat idea.&lt;/p&gt;
+            &lt;p&gt;This planet has - or rather had - a problem, which was this: most of the people on it were unhappy for
             pretty much of the  time. Many solutions were suggested for this problem, but most of these were largely
             concerned with the movements of small green pieces of paper, which is odd because on the whole it wasn't
             the small green pieces of paper that were unhappy.
             And so the problem remained; lots of the people were mean, and most of them were miserable, even the
-            ones with digital watches.</p>
-        </div>
-    </div>
-
-JavaScript:
-    <script type="text/javascript" src="yafs.js"></script>
-    <script type="text/javascript">
+            ones with digital watches.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+</pre>
+</p>
+<p>JavaScript:
+<pre>
+    &lt;script type=&quot;text/javascript&quot; src=&quot;yafs.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
         window.onload = function(){ var s = new YAFS('container'); };
-    </script>
-
+    &lt;/script&gt;
+</pre>
+</p>
+<p>
 Is that it?
-HELL, YES.</p>
-<h2>Authors</h2>
-<p>Gabriel Gilini (gabrielgilini@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Gabriel Gilini (gabrielgilini@gmail.com)<br/>      </p>
+</p>
+<p><strong>HELL, YES.</strong></p>
+<h2>Author</h2>
+<p>Gabriel Gilini (gabrielgilini@gmail.com)
+</p>
 
 
     <h2>Download</h2>
