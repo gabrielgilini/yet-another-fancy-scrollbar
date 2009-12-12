@@ -4,4 +4,6 @@
 <preference-set idref="a1481c31-e688-4950-bfa5-cd12455db741">
   <boolean id="import_live">1</boolean>
 </preference-set>
+<preference-set idref="a1481c31-e688-4950-bfa5-cd12455db741/index.html">
+</preference-set>
 </project>

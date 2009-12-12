@@ -31,7 +31,7 @@ function YAFS(containerId)
         addEvent('mousedown', handle, startScrolling);
         addEvent('mouseup', document, stopScrolling);
     }
-    
+
     function resizeHandle()
     {
         handleHeight = containerHeight / contentHeight * containerHeight;
@@ -41,12 +41,12 @@ function YAFS(containerId)
         }
         handle.style.height = handleHeight + 'px';
     }
-    
+
     function updateSizes()
     {
         scrollHeight = scrollBarHeight - handleHeight;
     }
-    
+
     function isHostMethod(object, method)
     {
         var t = typeof object[method];
@@ -223,7 +223,7 @@ function YAFS(containerId)
         {
             el.setAttribute('a', 'b');
             isBuggy = (el.a == 'b');
-            el = null;
+            
             if (isBuggy)
             {
                 return (isEventSupported = function(el, eventName)
@@ -247,6 +247,17 @@ function YAFS(containerId)
 
         if (el)
         {
+            hasOnselectstart = isEventSupported(el, 'onselectstart');
+
+            // event seems to be supported, cleanup and return
+            if (hasOnselectstart)
+            {
+                return (makeUnselectable = function(el)
+                {
+                    el.onselectstart = fnFalse;
+                })(el);
+            }
+
             var s = el.style;
             if (s)
             {
@@ -270,16 +281,7 @@ function YAFS(containerId)
             }
 
             // property wasn't found, check `onselectstart` event support
-            hasOnselectstart = isEventSupported(el, 'onselectstart');
 
-            // event seems to be supported, cleanup and return
-            if (hasOnselectstart)
-            {
-                return (makeUnselectable = function(el)
-                {
-                    el.onselectstart = fnFalse;
-                })(el);
-            }
         }
         return null;
     }
