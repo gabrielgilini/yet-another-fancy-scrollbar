@@ -44,7 +44,6 @@ function YAFS(containerId, horizontal)
     function resizeHandle()
     {
         handleSize[orientation] = containerSize[orientation] / contentSize[orientation] * containerSize[orientation];
-        console.log(containerSize, contentSize, handleSize);
         if(handleSize[orientation] < 30)
         {
             handleSize[orientation] = 30;
