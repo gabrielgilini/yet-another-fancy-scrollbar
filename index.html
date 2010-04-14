@@ -8,8 +8,8 @@
         var global = this;
         window.onload = function()
         {
-            global.s = new YAFS('container');
-            global.h = new YAFS('horizontal', true);
+            global.s = new YAFS('container', {'duration': 300, 'ease': API.ease.sigmoid4});
+            global.h = new YAFS('horizontal', {'horizontal': true,'duration': 300, 'ease': API.ease.sigmoid4});
         };
     </script>
     <style type="text/css">

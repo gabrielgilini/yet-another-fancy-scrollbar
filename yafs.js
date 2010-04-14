@@ -1,7 +1,8 @@
-function YAFS(containerId, horizontal)
+function YAFS(containerId, options)
 {
-    var orientation = horizontal?1:0;
-    var oStyle = horizontal?'left':'top';
+    options = options || {};
+    var dragging = false;
+    var orientation = options.horizontal?1:0;
     var container = E(containerId);
     var scrollBar = E(container.query('.yafs-scrollbar').first());
     var handle = E(scrollBar.children(0));
@@ -21,7 +22,7 @@ function YAFS(containerId, horizontal)
     {
         handle.attachDrag(null,
             {
-                ondrag: function(c)
+                'ondrag': function(c)
                 {
                     if(c[orientation] < 0)
                     {
@@ -33,6 +34,8 @@ function YAFS(containerId, horizontal)
                     }
                     scrollContentTo((c[orientation] / scrollableSize) * scrollableContentSize[orientation]);
                 },
+                'ondragstart': function(){dragging = true;},
+                'ondrop': function(){dragging = false;},
                 axes: (orientation) ? 'horizontal' : 'vertical',
                 ghost: 1
             }
@@ -56,26 +59,56 @@ function YAFS(containerId, horizontal)
         scrollableSize = scrollBarSize[orientation] - handleSize[orientation];
     }
 
-    var scrollContentTo = (function()
+    var scrollTo, scrollContentTo, scrollHandleTo;
+    (function()
     {
-        var pos = (horizontal
-            ? function(px){content.position(null, -px);}
-            : function(px){content.position(-px);}
+        var getOpts = function()
+        {
+            if(!dragging)
+            {
+                return {duration: options.duration, ease: options.ease};
+            }
+            return null;
+        };
+
+        var posFn = (options.horizontal
+            ? function(el, px){el.position(null, px, getOpts());}
+            : function(el, px){el.position(px, null, getOpts());}
         );
 
-        return function(px)
+        scrollContentTo = function(px)
+        {
+            if(px < 0)
             {
-                if(px < 0)
-                {
-                    px = 0;
-                }
-                else if(px > scrollableContentSize)
-                {
-                    px = scrollableSize;
-                }
-                pos(px);
-            };
+                px = 0;
+            }
+            else if(px > scrollableContentSize[orientation])
+            {
+                px = scrollableContentSize[orientation];
+            }
+            posFn(content, -px);
+        }
+
+        scrollHandleTo = function(px)
+        {
+            if(px < 0)
+            {
+                px = 0;
+            }
+            else if(px > scrollableSize)
+            {
+                px = scrollableSize;
+            }
+            posFn(handle, px);
+        }
+
+        scrollTo = function(px)
+        {
+            scrollContentTo(px);
+            scrollHandleTo((px / scrollableContentSize[orientation]) * scrollableSize);
+        };
     })();
+
 
     return {
         'scrollTo': scrollTo
