@@ -13,6 +13,7 @@ function YAFS(containerId, options)
     var handleSize = API.getElementSize(handle.element());
     var scrollBarSize = API.getElementSizeStyle(scrollBar.element());
     var scrollableSize = scrollBarSize[orientation] - handleSize[orientation];
+    var currentPos = 0;
 
     if(contentSize[orientation] <= containerSize[orientation])
     {
@@ -59,7 +60,7 @@ function YAFS(containerId, options)
         scrollableSize = scrollBarSize[orientation] - handleSize[orientation];
     }
 
-    var scrollTo, scrollContentTo, scrollHandleTo;
+    var scrollTo, scrollBy, scrollContentTo, scrollHandleTo;
     (function()
     {
         var getOpts = function()
@@ -86,8 +87,9 @@ function YAFS(containerId, options)
             {
                 px = scrollableContentSize[orientation];
             }
+            currentPos = px;
             posFn(content, -px);
-        }
+        };
 
         scrollHandleTo = function(px)
         {
@@ -100,17 +102,24 @@ function YAFS(containerId, options)
                 px = scrollableSize;
             }
             posFn(handle, px);
-        }
+        };
 
         scrollTo = function(px)
         {
             scrollContentTo(px);
             scrollHandleTo((px / scrollableContentSize[orientation]) * scrollableSize);
         };
+
+        scrollBy = function(px)
+        {
+            scrollTo(currentPos + px);
+        };
+
     })();
 
 
     return {
-        'scrollTo': scrollTo
+        'scrollTo': scrollTo,
+        'scrollBy': scrollBy
     }
 }
