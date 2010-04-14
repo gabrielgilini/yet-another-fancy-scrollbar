@@ -2,12 +2,18 @@
 <html lang="en">
 <head>
     <title>Yet Another Fancy Scrollbar</title>
+    <script type="text/javascript" src="mylib-full.js"></script>
     <script type="text/javascript" src="yafs.js"></script>
     <script type="text/javascript">
-        window.onload = function(){ var s = new YAFS('container'); };
+        var global = this;
+        window.onload = function()
+        {
+            global.s = new YAFS('container');
+            global.h = new YAFS('horizontal', true);
+        };
     </script>
     <style type="text/css">
-        #container
+        #container, #horizontal
         {
             width: 500px;
             position: relative;
@@ -18,7 +24,7 @@
 
         #container .yafs-scrollbar
         {
-            width: 10px;
+            width: 14px;
             height: 100%;
             position: absolute;
             top: 0;
@@ -43,6 +49,49 @@
             text-align: justify;
             position: relative;
             padding: 20px 0;
+        }
+
+        #horizontal
+        {
+            margin-top: 50px;
+        }
+
+        #horizontal .yafs-scrollbar
+        {
+            height: 14px;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: #fff;
+        }
+
+        #horizontal .yafs-scrollbar .yafs-handle
+        {
+            position: relative;
+            background-color: #006CC0;
+            width: 50px;
+            height: 14px;
+            border: 1px solid;
+            border-top-color: #2FA6FF;
+            border-left-color: #2FA6FF;
+            border-right-color: #00375F;
+            border-bottom-color: #00375F;
+        }
+
+        #horizontal .yafs-content
+        {
+            height: 380px;
+            text-align: justify;
+            position: relative;
+            padding: 0 20px;
+            width: 1000px;
+        }
+
+        #horizontal p {
+            width: 100px;
+            float: left;
+            overflow: hidden;
         }
 
         p
@@ -99,6 +148,23 @@
             story of how these consequences are inextricably intertwined with this remarkable book begins very
             simply.</p>
             <p>It begins with a house.</p>
+        </div>
+    </div>
+
+    <div id="horizontal">
+        <div class="yafs-content">
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+            <p>V<br>E<br>R<br>T<br>I<br>C<br>A<br>L<br><br>C<br>O<br>N<br>T<br>E<br>N<br>T</p>
+        </div>
+        <div class="yafs-scrollbar">
+            <div class="yafs-handle"></div>
         </div>
     </div>
 </body>
