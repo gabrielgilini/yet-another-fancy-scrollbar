@@ -120,6 +120,7 @@ function YAFS(containerId, options)
 
     return {
         'scrollTo': scrollTo,
-        'scrollBy': scrollBy
+        'scrollBy': scrollBy,
+        'getScrolledPx': function(){return currentPos;}
     }
 }
