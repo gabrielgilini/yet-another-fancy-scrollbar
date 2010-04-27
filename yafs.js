@@ -4,7 +4,7 @@ var API, E;
     if(
         API && API.areFeatures('getElementSizeStyle', 'getElementSize') &&
         E && E().areFeatures('query', 'setStyle', 'attachDrag', 'element', 'position') &&
-        D && D().areFeatures('first')
+        Q && Q().areFeatures('first')
     )
     {
         API.ScrollBar = function(container, options)
