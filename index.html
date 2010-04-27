@@ -6,10 +6,17 @@
     <script type="text/javascript" src="yafs.js"></script>
     <script type="text/javascript">
         var API, s, h;
-        if(API && API.attachDocumentReadyListener && API.ScrollBar)
+        if(API && API.attachDocumentReadyListener)
         {
-            s = new API.ScrollBar('container', {'duration': 300, 'ease': API.ease.sigmoid4});
-            h = new API.ScrollBar('horizontal', {'horizontal': true,'duration': 300, 'ease': API.ease.sigmoid4});
+            API.attachDocumentReadyListener(function()
+            {
+                if(API.ScrollBar)
+                {
+                    s = new API.ScrollBar('container', {'duration': 300, 'ease': API.ease.sigmoid4});
+                    h = new API.ScrollBar('horizontal', {'horizontal': true,'duration': 300, 'ease': API.ease.sigmoid4});
+                }
+            });
+
         }
     </script>
     <style type="text/css">
