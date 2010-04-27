@@ -5,12 +5,12 @@
     <script type="text/javascript" src="mylib-full.js"></script>
     <script type="text/javascript" src="yafs.js"></script>
     <script type="text/javascript">
-        var global = this;
-        window.onload = function()
+        var API, s, h;
+        if(API && API.attachDocumentReadyListener && API.ScrollBar)
         {
-            global.s = new YAFS('container', {'duration': 300, 'ease': API.ease.sigmoid4});
-            global.h = new YAFS('horizontal', {'horizontal': true,'duration': 300, 'ease': API.ease.sigmoid4});
-        };
+            s = new API.ScrollBar('container', {'duration': 300, 'ease': API.ease.sigmoid4});
+            h = new API.ScrollBar('horizontal', {'horizontal': true,'duration': 300, 'ease': API.ease.sigmoid4});
+        }
     </script>
     <style type="text/css">
         #container, #horizontal
