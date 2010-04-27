@@ -31,6 +31,20 @@ if(API && API.attachDocumentReadyListener)
                     var scrollableSize = scrollBarSize[orientation] - handleSize[orientation];
                     var currentPos = 0;
 
+                    var resizeHandle;
+                    if(E.prototype.size)
+                    {
+                        resizeHandle = function()
+                        {
+                            handleSize[orientation] = containerSize[orientation] / contentSize[orientation] * containerSize[orientation];
+                            if(handleSize[orientation] < 30)
+                            {
+                                handleSize[orientation] = 30;
+                            }
+                            handle.size(orientation?null:handleSize[0], orientation?handleSize[1]:null);
+                        };
+                    }
+
                     if(contentSize[orientation] <= containerSize[orientation])
                     {
                         scrollBar.setStyle('display', 'none');
@@ -59,20 +73,6 @@ if(API && API.attachDocumentReadyListener)
                         );
                         resizeHandle && resizeHandle();
                         updateScrollableSizes();
-                    }
-
-                    var resizeHandle;
-                    if(E.prototype.size)
-                    {
-                        resizeHandle = function()
-                        {
-                            handleSize[orientation] = containerSize[orientation] / contentSize[orientation] * containerSize[orientation];
-                            if(handleSize[orientation] < 30)
-                            {
-                                handleSize[orientation] = 30;
-                            }
-                            handle.size(orientation?null:handleSize[0], orientation?handleSize[1]:null);
-                        };
                     }
 
                     function updateScrollableSizes()
