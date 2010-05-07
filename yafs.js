@@ -47,7 +47,7 @@ if(API && API.attachDocumentReadyListener)
 
                     if(contentSize[orientation] <= containerSize[orientation])
                     {
-                        scrollBar.setStyle('display', 'none');
+                        scrollBar.show(false, {'removeOnHide': options.removeOnHide});
                     }
                     else
                     {
