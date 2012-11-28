@@ -18,6 +18,7 @@ if(API && API.attachDocumentReadyListener)
                     {
                         container = E(container);
                     }
+                    var sAPI = {};
                     var dragging = false;
                     var mWheelAttached = false;
                     var orientation = options.horizontal?1:0;
@@ -178,6 +179,8 @@ if(API && API.attachDocumentReadyListener)
                             currentPos = px;
                             posFn(content, -px, effects);
 
+                            Events.fire(Events.types.SCROLL, {currentContentPos: px, maxContentPos: scrollableContentSize[orientation]});
+
                             return px;
                         };
 
@@ -220,16 +223,84 @@ if(API && API.attachDocumentReadyListener)
 
                     })();
 
+                    var Events = (function()
+                    {
+                        var types = {
+                            SCROLL: 'scroll'
+                        };
 
-                    return {
+                        var registered = {};
+                        for(var t in types)
+                        {
+                            if(types.hasOwnProperty(t))
+                            {
+                                registered[types[t]] = [];
+                            }
+                        }
+
+                        var add = function(type, listener, thisBinding)
+                        {
+                            var innerListener;
+
+                            if(typeof listener != 'function')
+                            {
+                                throw new Error('EventException: event listener must be a function.');
+                            }
+
+                            if(!thisBinding)
+                            {
+                                thisBinding = sAPI;
+                            }
+
+                            innerListener = function(args)
+                            {
+                                listener.call(thisBinding, args);
+                            };
+                            innerListener.originalListener = listener;
+
+                            registered[type].push(innerListener);
+                        };
+
+                        var remove = function(type, listener)
+                        {
+                            var registeredByType = registered[type];
+                            for(var i = registeredByType.length; --i >= 0;)
+                            {
+                                if(registeredByType[i].originalListener == listener)
+                                {
+                                    registeredByType.splice(i, 1);
+                                    break;
+                                }
+                            }
+                        };
+
+                        var fire = function(type, args)
+                        {
+                            var registeredByType = registered[type];
+                            for(var i = 0, l = registeredByType.length; i < l; ++i)
+                            {
+                                registeredByType[i](args);
+                            }
+                        };
+
+                        return {
+                            add: add,
+                            remove: remove,
+                            fire: fire,
+                            types: types
+                        };
+                    })();
+
+                    sAPI = {
                         'scrollTo': scrollTo,
                         'scrollBy': scrollBy,
                         'getScrolledPx': function(){return currentPos;},
-                        'updateScroll': function()
-                            {
-                                updateScrollableSizes();
-                            }
+                        'updateScroll': updateScrollableSizes,
+                        'addEventListener': Events.add,
+                        'removeEventListener': Events.remove
                     };
+
+                    return sAPI;
                 };
             }
         }
